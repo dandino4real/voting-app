@@ -2,11 +2,12 @@
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import Navbar from "./component/navbar/navbar";
+
 import "../lib/fontawesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import "animate.css";
+import Image from "next/image";
 
 // Example candidate data
 const candidates = [
@@ -33,37 +34,6 @@ const candidates = [
     name: "Mark Robinson",
     position: "Governor",
     image: "/governor-2.avif",
-  },
-  {
-    id: 4,
-    name: "Juliet Elianza",
-    position: "Governor",
-    image: "/governor-3.avif",
-  },
-];
-
-// Example news data
-const news = [
-  {
-    id: 1,
-    title: "Election Day Announced",
-    content:
-      "The next election day is scheduled for November 5th, 2024. Make sure you&apos;re prepared!",
-    link: "#",
-  },
-  {
-    id: 2,
-    title: "New Voting Regulations",
-    content:
-      "New regulations have been introduced to enhance the security and transparency of the voting process.",
-    link: "#",
-  },
-  {
-    id: 3,
-    title: "Candidate Profiles Released",
-    content:
-      "Profiles of all candidates for the upcoming election have been released. Check them out to make an informed decision.",
-    link: "#",
   },
 ];
 
@@ -160,7 +130,6 @@ export default function Home() {
       if (activeSlide) {
         let nextSlide = activeSlide.nextElementSibling as HTMLElement | null;
 
-        // If there's no next sibling, go back to the first slide
         if (!nextSlide) {
           nextSlide = document.querySelector(
             ".carousel-item:first-child"
@@ -179,8 +148,9 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // IntersectionObserver for detecting sections in view and adding animation
   useEffect(() => {
+    const currentSections = sectionsRef.current; // Store the current value
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -212,14 +182,14 @@ export default function Home() {
       });
     });
 
-    sectionsRef.current.forEach((section) => {
+    currentSections.forEach((section) => {
       if (section) {
         observer.observe(section);
       }
     });
 
     return () => {
-      sectionsRef.current.forEach((section) => {
+      currentSections.forEach((section) => {
         if (section) {
           observer.unobserve(section);
         }
@@ -228,7 +198,13 @@ export default function Home() {
   }, []);
 
   const addToRef = (el: HTMLElement | null, index: number) => {
-    if (el && !sectionsRef.current.includes(el)) {
+    if (el) {
+      // Ensure that the sectionsRef is an array before updating
+      if (!sectionsRef.current) {
+        sectionsRef.current = [];
+      }
+
+      // Add the element to the specified index
       sectionsRef.current[index] = el;
     }
   };
@@ -243,8 +219,9 @@ export default function Home() {
           }}
         >
           <div className="relative z-10 w-full h-full py-8 px-6">
-            <h1 className="text-[#11385b] text-4xl font-extrabold mb-6 pt-4 animate__animated animate__fadeIn text-gradient transition-transform duration-500 ease-in-out">
-              Revolutionizing Voting with Blockchain
+            <h1 className="text-[#11385b] text-5xl font-extrabold mb-6 pt-4 animate__animated animate__fadeIn text-gradient transition-transform duration-500 ease-in-out">
+              <span className=" text-5xl"> Revolutionizing </span>
+              <br /> Voting with Blockchain
             </h1>
             <p className="text-[#11385b] text-2xl mb-10 animate__animated animate__fadeIn animate__delay-1s text-shadow transition-transform duration-500 ease-in-out">
               Countdown to the Next Election: {timeLeft}
@@ -273,37 +250,46 @@ export default function Home() {
             <div className="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-12">
               {/* Total Registered Voters */}
               <div className=" flex flex-col justify-center p-6 w-full md:w-1/3">
-                <img
+                <Image
                   src={"/registered_voters_icon.png"}
                   alt="registered voters"
-                  className=" mx-auto  h-24 object-cover"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  style={{ width: "20px", height: "auto" }}
                 />
                 <h3 className="text-xl font-semibold mb-4">
                   Registered Voters
                 </h3>
-                <p className="text-4xl font-bold text-[#11385b]">27,672,264</p>
+                <p className="text-3xl font-bold text-[#11385b]">27,672,264</p>
               </div>
 
               {/* Female Voters */}
               <div className=" flex flex-col justify-center p-6 w-full md:w-1/3">
-                <img
+                <Image
                   src={"/female_icon.png"}
                   alt="female voters"
-                  className=" mx-auto  h-20 object-cover"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  style={{ width: "20px", height: "auto" }}
                 />
                 <h3 className="text-xl font-semibold mb-4">Female</h3>
-                <p className="text-4xl font-bold text-pink-500">55.25%</p>
+                <p className="text-3xl font-bold text-pink-500">55.25%</p>
               </div>
 
               {/* Male Voters */}
               <div className=" flex flex-col justify-center p-6 w-full md:w-1/3">
-                <img
+                <Image
                   src={"/male_icon.png"}
                   alt="male voters"
-                  className=" mx-auto  h-24 object-cover"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  style={{ width: "20px", height: "auto" }}
                 />
                 <h3 className="text-xl font-semibold mb-4">Male</h3>
-                <p className="text-4xl font-bold text-green-800">44.75%</p>
+                <p className="text-3xl font-bold text-green-800">44.75%</p>
               </div>
             </div>
           </div>
@@ -320,9 +306,7 @@ export default function Home() {
                   className="carousel-item w-full h-32 flex-shrink-0"
                 >
                   <div className="w-full text-gray-900 items-center justify-center text-center p-6 bg-[#e2edf2] rounded shadow-lg">
-                    <h3 className="text-2xl font-semibold text-[#11385b]">
-                      {news.title}
-                    </h3>
+                    <h3 className="text-2xl  text-[#11385b]">{news.title}</h3>
                     <p className="mt-2">{news.description}</p>
                   </div>
                 </div>
@@ -350,33 +334,27 @@ export default function Home() {
         ref={(el) => addToRef(el, 1)}
         className="bg-white pt-10 pb-20 px-8 animate-delay-section"
       >
-        <h2 className="text-[#11385b] text-3xl font-bold mb-10 ps-4">
+        <h2 className="text-[#11385b] text-3xl  mb-10 ps-4 text-center">
           Step-by-Step Guide to Secure Voting
         </h2>
 
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-          <div className="bg-gray-50 p-8 rounded-lg shadow-lg transform transition duration-700 ease-in-out hover:scale-105 hover:shadow-2xl animate__animated animate__fadeInUp animate-step">
-            <h3 className="text-2xl font-bold mb-4 text-[#005ea2]">
-              Step 1: Register
-            </h3>
+          <div className="bg-gray-50 p-8 rounded-lg shadow transform transition duration-700 ease-in-out hover:scale-105 hover:shadow-2xl animate__animated animate__fadeInUp animate-step">
+            <h3 className="text-2xl  mb-4 text-[#005ea2]">Step 1: Register</h3>
             <p className="text-gray-600">
               Sign up securely on the platform using your verified credentials.
             </p>
           </div>
 
-          <div className="bg-gray-50 p-8 rounded-lg shadow-lg transform transition duration-700 ease-in-out hover:scale-105 hover:shadow-2xl animate__animated animate__fadeInUp animate-step">
-            <h3 className="text-2xl font-bold mb-4 text-[#005ea2]">
-              Step 2: Vote
-            </h3>
+          <div className="bg-gray-50 p-8 rounded-lg shadow transform transition duration-700 ease-in-out hover:scale-105 hover:shadow-2xl animate__animated animate__fadeInUp animate-step">
+            <h3 className="text-2xl  mb-4 text-[#005ea2]">Step 2: Vote</h3>
             <p className="text-gray-600">
               Cast your vote securely using our blockchain system.
             </p>
           </div>
 
-          <div className="bg-gray-50 p-8 rounded-lg shadow-lg transform transition duration-700 ease-in-out hover:scale-105 hover:shadow-2xl animate__animated animate__fadeInUp animate-step">
-            <h3 className="text-2xl font-bold mb-4 text-[#005ea2]">
-              Step 3: Track
-            </h3>
+          <div className="bg-gray-50 p-8 rounded-lg shadow transform transition duration-700 ease-in-out hover:scale-105 hover:shadow-2xl animate__animated animate__fadeInUp animate-step">
+            <h3 className="text-2xl  mb-4 text-[#005ea2]">Step 3: Track</h3>
             <p className="text-gray-600">
               Track your vote through blockchain for transparency.
             </p>
@@ -388,21 +366,25 @@ export default function Home() {
         ref={(el) => addToRef(el, 2)}
         className="bg-gray-100 text-[#000] py-20 px-8"
       >
-        <h2 className="text-[#11385b] text-3xl md:text-4xl font-bold mb-12 ps-4 text-left  animate-fadeIn">
+        <h2 className="text-[#11385b] text-3xl md:text-3xl text-center  mb-12 ps-4   animate-fadeIn">
           Meet the Candidates
         </h2>
 
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Map through the candidates dynamically */}
           {candidates.map((candidate) => (
             <div
               key={candidate.id}
-              className="bg-white text-gray-900 p-6 rounded-lg shadow-md transition-transform duration-300 transform hover:scale-105 animate-fadeInUp"
+              className="bg-white text-gray-900 p-6 rounded-lg transition-transform duration-300 transform hover:scale-105 animate-fadeInUp "
             >
-              <img
+              <Image
                 src={candidate.image}
                 alt={`${candidate.name} - ${candidate.position}`}
-                className="mb-4 rounded-full mx-auto w-32 h-32 object-cover"
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "20px", height: "auto" }}
+                className="mb-4 rounded-full mx-auto  object-cover"
               />
               <h3 className="text-2xl font-bold mb-4 text-center">
                 {candidate.name}
@@ -417,8 +399,9 @@ export default function Home() {
         <div className="text-center mt-12 animate-fadeIn">
           <a
             href="/all-candidates"
-            className="inline-block bg-blue-900 hover:bg-blue-950 text-white font-semibold py-4 px-10 rounded-full  transition-colors duration-300"
+            className="inline-block text-black font-semibold py-4 px-10 rounded-full  transition-colors duration-300"
           >
+            See all candidates
             See all candidates
           </a>
         </div>
@@ -426,40 +409,27 @@ export default function Home() {
 
       <section className=" my-6 px-10 ">
         <div className=" flex justify-center gap-14">
-          <div className=" w-[58%] flex flex-col justify-center items-center px-4 ">
+          <div className=" w-[80%] flex flex-col justify-center items-center px-4 ">
             <h3 className="text-3xl font-semibold">Latest News And Updates</h3>
-            <p className=" mt-8">
+            <p className=" mt-8 text-center">
               Our journey began with a simple vision - to harness the
               transformative power of technology and create a lasting impact on
               the way organizations operate and thrive in the digital age.
               Founded in year.
             </p>
-            <div className=" mt-10">
-              <button className="border rounded-lg px-6 py-4">View more</button>
-            </div>
-          </div>
-
-          <div className="p-2 rounded-xl w-[349px] bg-[#E9F1F7]">
-            <div className="flex justify-center">
-              <img src="/sample_img_1.svg" alt="" className=" w-[326px]" />
-            </div>
-            <h3 className="mt-4 font-semibold px-2">Lorem ipsum dolor sit</h3>
-            <p className=" mb-6 mt-3 text-sm px-2">
-              Lorem ipsum dolor sit amet consectetur. Turpis dui consequat non
-              sit nisl mauris dictum. Sed auctor iaculis varius viverra in
-              feugiat.Urna nec ipsum dolor sit amet consectetur.{" "}
-            </p>
-            <Link href={"/"}>
-              <p className=" mb-10 ms-2 inline-block border-b border-blue-300 pb-1">
-                learn more
-              </p>
-            </Link>
           </div>
         </div>
-        <div className=" flex gap-7 justify-center flex-wrap mt-6 ">
-          <div className="p-2 rounded-xl w-[349px] bg-[#E9F1F7]">
+        <div className=" flex gap-7 justify-center flex-wrap mt-10  ">
+          <div className="p-2 rounded-xl w-[249px] bg-[#E9F1F7]">
             <div className="flex justify-center">
-              <img src="/sample_img_1.svg" alt="" className=" w-[326px]" />
+              <Image
+                src="/sample_img_1.svg"
+                alt=""
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "326px", height: "auto" }}
+              />
             </div>
             <h3 className="mt-4 font-semibold px-2">Lorem ipsum dolor sit</h3>
             <p className=" mb-6 mt-3 text-sm px-2">
@@ -473,9 +443,24 @@ export default function Home() {
               </p>
             </Link>
           </div>
-          <div className="p-2 rounded-xl w-[349px] bg-[#E9F1F7]">
+          <div className="p-2 rounded-xl w-[249px] bg-[#E9F1F7]">
             <div className="flex justify-center">
-              <img src="/sample_img_1.svg" alt="" className=" w-[326px]" />
+              <Image
+                src="/sample_img_1.svg"
+                alt=""
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "326px", height: "auto" }}
+              />
+              <Image
+                src="/sample_img_1.svg"
+                alt=""
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "326px", height: "auto" }}
+              />
             </div>
             <h3 className="mt-4 font-semibold px-2">Lorem ipsum dolor sit</h3>
             <p className=" mb-6 mt-3 text-sm px-2">
@@ -490,9 +475,39 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="p-2 rounded-xl w-[349px] bg-[#E9F1F7]">
+          <div className="p-2 rounded-xl w-[249px] bg-[#E9F1F7]">
             <div className="flex justify-center">
-              <img src="/sample_img_1.svg" alt="" className=" w-[326px]" />
+              <Image
+                src="/sample_img_1.svg"
+                alt=""
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "326px", height: "auto" }}
+              />
+            </div>
+            <h3 className="mt-4 font-semibold px-2">Lorem ipsum dolor sit</h3>
+            <p className=" mb-6 mt-3 text-sm px-2">
+              Lorem ipsum dolor sit amet consectetur. Turpis dui consequat non
+              sit nisl mauris dictum. Sed auctor iaculis varius viverra in
+              feugiat.Urna nec ipsum dolor sit amet consectetur.{" "}
+            </p>
+            <Link href={"/"}>
+              <p className=" mb-10 ms-2 inline-block border-b border-blue-300 pb-1">
+                learn more
+              </p>
+            </Link>
+          </div>
+          <div className="p-2 rounded-xl w-[249px] bg-[#E9F1F7]">
+            <div className="flex justify-center">
+              <Image
+                src="/sample_img_1.svg"
+                alt=""
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "326px", height: "auto" }}
+              />
             </div>
             <h3 className="mt-4 font-semibold px-2">Lorem ipsum dolor sit</h3>
             <p className=" mb-6 mt-3 text-sm px-2">
@@ -510,8 +525,10 @@ export default function Home() {
       </section>
 
       <section className="my-10 flex flex-col items-center">
-        <h3 className=" text-3xl font-semibold">check out live feed of election&apos;s hottest topic</h3>
-        <p className=" mt-6 w-[60%] text-center">
+        <h3 className=" text-3xl font-semibold">
+          check out live feed of election&apos;s hottest topic
+        </h3>
+        <p className=" mt-6 w-[60%] mb-6 text-center">
           Lorem ipsum dolor sit amet consectetur. Turpis dui consequat non sit
           nisl mauris dictum. Sed auctor iaculis varius viverra in feugiat.Urna
           nec ipsum dolor sit amet consectetur.{" "}
@@ -519,31 +536,59 @@ export default function Home() {
         <div className=" flex flex-wrap gap-10 mt-10">
           <div className="p-2 rounded-xl w-[250px] bg-[#E9F1F7]">
             <div className="flex justify-center">
-              <img src="/sample_img_1.svg" alt="" className=" w-[326px]" />
+              <Image
+                src="/sample_img_1.svg"
+                alt=""
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "326px", height: "auto" }}
+              />
             </div>
-            <p className="mt-2 px-2">1.3M+ Views . 1 day ago</p>
-            <p className=" mt-2 px-2 font-semibold">Zap media house</p>
+            <p className="mt-4 px-2">1.3M+ Views . 1 day ago</p>
+            <p className=" mt-2 px-2 font-semibold mb-2">Zap media house</p>
           </div>
           <div className="p-2 rounded-xl w-[250px] bg-[#E9F1F7]">
             <div className="flex justify-center">
-              <img src="/sample_img_1.svg" alt="" className=" w-[326px]" />
+              <Image
+                src="/sample_img_1.svg"
+                alt=""
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "326px", height: "auto" }}
+              />
             </div>
-            <p>1.3M+ Views . 1 day ago</p>
-            <p>Zap media house</p>
+            <p className="mt-4 px-2">1.3M+ Views . 1 day ago</p>
+            <p className=" mt-2 px-2 font-semibold mb-2">Zap media house</p>
           </div>
           <div className="p-2 rounded-xl w-[250px] bg-[#E9F1F7]">
             <div className="flex justify-center">
-              <img src="/sample_img_1.svg" alt="" className=" w-[326px]" />
+              <Image
+                src="/sample_img_1.svg"
+                alt=""
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "326px", height: "auto" }}
+              />
             </div>
-            <p>1.3M+ Views . 1 day ago</p>
-            <p>Zap media house</p>
+            <p className="mt-4 px-2">1.3M+ Views . 1 day ago</p>
+            <p className=" mt-2 px-2 font-semibold mb-2">Zap media house</p>
           </div>
           <div className="p-2 rounded-xl w-[250px] bg-[#E9F1F7]">
             <div className="flex justify-center">
-              <img src="/sample_img_1.svg" alt="" className=" w-[326px]" />
+              <Image
+                src="/sample_img_1.svg"
+                alt=""
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "326px", height: "auto" }}
+              />
             </div>
-            <p>1.3M+ Views . 1 day ago</p>
-            <p>Zap media house</p>
+            <p className="mt-4 px-2">1.3M+ Views . 1 day ago</p>
+            <p className=" mt-2 px-2 font-semibold mb-2">Zap media house</p>
           </div>
         </div>
       </section>

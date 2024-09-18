@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 const AboutUs = () => {
@@ -112,28 +113,37 @@ const AboutUs = () => {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
-                <img
+                <Image
                   src="/team-member-1.jpg"
                   alt="Team Member"
-                  className="w-32 h-32 rounded-full mx-auto mb-4"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  style={{ width: "40px", height: "auto" }}
                 />
                 <h4 className="text-lg font-semibold">Jane Doe</h4>
                 <p className="text-gray-500">CEO & Founder</p>
               </div>
               <div className="text-center">
-                <img
+                <Image
                   src="/team-member-2.jpg"
                   alt="Team Member"
-                  className="w-32 h-32 rounded-full mx-auto mb-4"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  style={{ width: "40px", height: "auto" }}
                 />
                 <h4 className="text-lg font-semibold">John Smith</h4>
                 <p className="text-gray-500">Chief Technology Officer</p>
               </div>
               <div className="text-center">
-                <img
+                <Image
                   src="/team-member-3.jpg"
                   alt="Team Member"
-                  className="w-32 h-32 rounded-full mx-auto mb-4"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  style={{ width: "40px", height: "auto" }}
                 />
                 <h4 className="text-lg font-semibold">Sarah Lee</h4>
                 <p className="text-gray-500">Head of Operations</p>
@@ -154,25 +164,37 @@ const AboutUs = () => {
               processes.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-8">
-              <img
+              <Image
                 src="/partner-logo-1.png"
                 alt="Partner Logo"
-                className="h-16"
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "20px", height: "auto" }}
               />
-              <img
+              <Image
                 src="/partner-logo-2.png"
                 alt="Partner Logo"
-                className="h-16"
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "20px", height: "auto" }}
               />
-              <img
+              <Image
                 src="/partner-logo-3.png"
                 alt="Partner Logo"
-                className="h-16"
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "20px", height: "auto" }}
               />
-              <img
+              <Image
                 src="/partner-logo-4.png"
                 alt="Partner Logo"
-                className="h-16"
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "20px", height: "auto" }}
               />
             </div>
           </div>
@@ -183,9 +205,10 @@ const AboutUs = () => {
               Join Us in Shaping the Future of Democracy
             </h3>
             <p className="text-gray-700 mb-8">
-              Be a part of the revolution. Whether you're a voter, a volunteer,
-              or a partner, your involvement makes a difference. Together, we
-              can ensure that every vote is secure, transparent, and counted.
+              Be a part of the revolution. Whether you&apos;re a voter, a
+              volunteer, or a partner, your involvement makes a difference.
+              Together, we can ensure that every vote is secure, transparent,
+              and counted.
             </p>
             <a
               href="/contact"

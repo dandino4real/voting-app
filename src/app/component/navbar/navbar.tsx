@@ -1,17 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+// import { useState } from "react";
 import { usePathname } from "next/navigation";
 import "../../../lib/fontawesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Navbar = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  // const [dropdownOpen, setDropdownOpen] = useState(false);
   const pathname = usePathname();
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
+  // const toggleDropdown = () => {
+  //   setDropdownOpen(!dropdownOpen);
+  // };
 
   return (
     <div>
@@ -65,12 +65,12 @@ const Navbar = () => {
         </div>
         <div className="container mx-auto flex justify-between items-center mt-8 ">
           {/* Navbar Links */}
-          <ul className="flex items-center space-x-4 text-gray-800 font-semibold">
+          <ul className="flex items-center space-x-4 text-gray-800 ">
             <li className="relative group">
               <Link
                 href="/"
                 className={`relative block px-4 py-2 transition-colors duration-300 ${
-                  pathname === "/" ? "text-[#005ea2]" : "hover:text-[#005ea2]"
+                  pathname === "/" ? "text-[#005ea2] font-semibold" : "hover:text-[#005ea2]"
                 }`}
               >
                 Home
@@ -88,7 +88,7 @@ const Navbar = () => {
                 href="/about"
                 className={`relative block px-4 py-2 transition-colors duration-300 ${
                   pathname === "/about"
-                    ? "text-[#005ea2]"
+                    ? "text-[#005ea2] font-semibold"
                     : "hover:text-[#005ea2]"
                 }`}
               >
@@ -107,7 +107,7 @@ const Navbar = () => {
                 href="/elections"
                 className={`relative block px-4 py-2 transition-colors duration-300 ${
                   pathname === "/elections"
-                    ? "text-[#005ea2]"
+                    ? "text-[#005ea2] font-semibold"
                     : "hover:text-[#005ea2]"
                 }`}
               >
@@ -126,7 +126,7 @@ const Navbar = () => {
                 href="/voting-info"
                 className={`relative block px-4 py-2 transition-colors duration-300 ${
                   pathname === "/voting-info"
-                    ? "text-[#005ea2]"
+                    ? "text-[#005ea2] font-semibold"
                     : "hover:text-[#005ea2]"
                 }`}
               >
@@ -145,7 +145,7 @@ const Navbar = () => {
                 href="/candidates"
                 className={`relative block px-4 py-2 transition-colors duration-300 ${
                   pathname === "/candidates"
-                    ? "text-[#005ea2]"
+                    ? "text-[#005ea2] font-semibold"
                     : "hover:text-[#005ea2]"
                 }`}
               >
@@ -164,7 +164,7 @@ const Navbar = () => {
                 href="/results"
                 className={`relative block px-4 py-2 transition-colors duration-300 ${
                   pathname === "/results"
-                    ? "text-[#005ea2]"
+                    ? "text-[#005ea2] font-semibold"
                     : "hover:text-[#005ea2]"
                 }`}
               >
@@ -183,7 +183,7 @@ const Navbar = () => {
                 href="/contact"
                 className={`relative block px-4 py-2 transition-colors duration-300 ${
                   pathname === "/contact"
-                    ? "text-[#005ea2]"
+                    ? "text-[#005ea2] font-semibold"
                     : "hover:text-[#005ea2]"
                 }`}
               >
@@ -202,7 +202,7 @@ const Navbar = () => {
                 href="/faq"
                 className={`relative block px-4 py-2 transition-colors duration-300 ${
                   pathname === "/faq"
-                    ? "text-[#005ea2]"
+                    ? "text-[#005ea2] font-semibold"
                     : "hover:text-[#005ea2]"
                 }`}
               >

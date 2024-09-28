@@ -40,3 +40,17 @@ body {
 .animate-slide-up {
   animation: slide-up 0.8s ease-out forwards;
 }
+
+
+@keyframes scrollNews {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scroll-news {
+  animation: scrollNews 30s linear infinite;
+}

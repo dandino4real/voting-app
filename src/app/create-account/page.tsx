@@ -151,7 +151,7 @@ export default function CreateAccount() {
             {step < 3 && (
               <button
                 type="button"
-                className="bg-basecolour text-white py-4 px-4 rounded-lg w-full font-semibold"
+                className="bg-basecolour text-white  py-4 px-4 rounded-lg w-full font-semibold"
                 onClick={handleNext}
               >
                 Next

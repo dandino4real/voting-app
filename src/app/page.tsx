@@ -742,7 +742,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="text-center mt-8 text-gray-500 text-sm">
+        <div className="text-center mt-8 text-gray-100 text-sm">
           &copy; 2024 Voting System. All rights reserved.
         </div>
       </footer>

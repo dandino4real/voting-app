@@ -8,6 +8,7 @@ import Image from "next/image";
 // import UsersSection from "@/components/admin/user";
 import { useState } from "react";
 import Profile from "../component/profile/profile";
+import Vote from "../component/vote/vote";
 
 
 
@@ -47,9 +48,9 @@ export default function UserDashboard() {
           </li>
           <li className="mb-4">
             <button
-              onClick={() => setActiveSection("Users")}
+              onClick={() => setActiveSection("Vote")}
               className={`flex items-center  py-3 ps-10 w-full transition-colors rounded-lg ${
-                activeSection === "Users"
+                activeSection === "Vote"
                 ? "bg-[#FAFAFA] text-basecolour rounded-s-full"
                   : " hover:opacity-75 "
               }`}
@@ -135,66 +136,11 @@ export default function UserDashboard() {
 
       {/* Main Content */}
       <div className="flex-1 ml-64 flex flex-col overflow-hidden overflow-x-hidden">
-        {/* Header */}
-        {/* <header className="bg-white shadow-md p-4 flex items-center justify-between relative">
-          <div className="flex items-center space-x-4">
-            <p className="text-3xl font-semibold text-gray-800">
-              Welcome Back, <span className="text-blue-600">John</span>!
-            </p>
-          </div>
-          <div className="flex items-center space-x-6 relative">
-            <div className="relative">
-         
-              {dropdownOpen && (
-                <div className="absolute z-50 right-0 mt-2 w-48 bg-white text-gray-700 border border-gray-200 rounded-lg shadow-lg">
-                  <button
-                    onClick={() => alert("Profile clicked")}
-                    className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-100"
-                  >
-                    <svg
-                      className="w-5 h-5 mr-3 text-gray-600"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 11.5a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0zM12 15v5m-5-5h10"
-                      />
-                    </svg>
-                    Profile
-                  </button>
-                  <button
-                    onClick={() => alert("Logout clicked")}
-                    className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-100"
-                  >
-                    <svg
-                      className="w-5 h-5 mr-3 text-gray-600"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 16l4-4m0 0l-4-4m4 4H3"
-                      />
-                    </svg>
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </header> */}
+      
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden p-6">
           {activeSection === "Dashboard" && <Profile />}
+          {activeSection === "Vote" && <Vote />}
           {/* {activeSection === "Loans" && <AdminLoanDashboard />}
           {activeSection === "Users" && <UsersSection />}
           {activeSection === "Reports" && <ReportsSection />}

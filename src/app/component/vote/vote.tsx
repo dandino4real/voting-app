@@ -4,18 +4,29 @@ import Image from "next/image";
 import ElectionTable from "../election-table/table";
 
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import 'react-circular-progressbar/dist/styles.css';
+import "react-circular-progressbar/dist/styles.css";
 
 export default function Vote() {
   const [isFirstLineActive, setIsFirstLineActive] = useState(true);
   const [selectedElection, setSelectedElection] = useState("");
   const [showElection, setShowElection] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [goBack, setGoBack] = useState(0);
+  const [confirmVote, setConfirmVote] = useState(false);
+  const [voted, setVoted] = useState(false);
 
-    // Function to toggle modal visibility
-    const toggleModal = () => {
-      setIsModalOpen(!isModalOpen);
-    };
+  // Function to toggle modal visibility
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const handleFinish = () => {
+    setSelectedElection("");
+    setShowElection(false);
+    setGoBack(0);
+    setConfirmVote(false);
+    setConfirmVote(false);
+  };
 
   // Initial time for the countdown (23 hours, 16 minutes, 48 seconds)
   const initialTime = {
@@ -25,6 +36,18 @@ export default function Vote() {
   };
 
   const [time, setTime] = useState(initialTime);
+
+  // Function to handle confirmation
+  const handleConfirmation = () => {
+    toggleModal();
+    setConfirmVote(true);
+  };
+
+  //function tohandle vote
+
+  const handleVote = () => {
+    setVoted(!voted);
+  };
 
   // Function to handle countdown logic
   useEffect(() => {
@@ -64,18 +87,30 @@ export default function Vote() {
   const getMinutesPercentage = () => (time.minutes / 60) * 100;
   const getSecondsPercentage = () => (time.seconds / 60) * 100;
 
-
   const toggleLineWidth = () => {
     setIsFirstLineActive(!isFirstLineActive);
   };
 
+  const handleGoBack = () => {
+    setGoBack((prev) => prev - 1);
+    if (goBack < 2) {
+      setSelectedElection("");
+      setShowElection(false);
+    }
+    if (goBack === 2) {
+      setShowElection(false);
+    }
+  };
+
   const handleElection = () => {
+    setGoBack((prev) => prev + 1);
     setShowElection(true);
   };
 
   const handleElectionChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
+    setGoBack((prev) => prev + 1);
     setSelectedElection(event.target.value);
   };
 
@@ -122,132 +157,281 @@ export default function Vote() {
 
       {/* Content Section */}
       <div className="text-lg text-gray-700 w-full">
-        <div></div>
-
         {isFirstLineActive ? (
-          <div className="px-4 md:px-10 w-[85%]">
-            <div className="p-5 bg-white rounded-lg shadow">
-              <div className="flex flex-col items-center">
-                <Image
-                  className="rounded-full h-40 w-40 object-cover"
-                  src="/us-flag.jpeg"
-                  alt="candidate"
-                   width={500}
-                  height={500}
-                  sizes="100vw"
-                  style={{ objectPosition: "center" }}
-                  priority
-                />
-                {selectedElection && (
-                <div className="flex items-center gap-4 text-base mt-6">
-                <p className="font-semibold">Time left :</p>
-                <div className="flex items-center gap-4 font-semibold">
-                  <div className="w-16 h-16">
-                    <CircularProgressbar
-                      value={getHoursPercentage()}
-                      text={`${time.hours} hrs`}
-                      styles={buildStyles({
-                        textColor: "#000",
-                        pathColor: "#4caf50", // Customize progress color
-                        trailColor: "#ddd",
-                      })}
-                    />
-                  </div>
-                  <div className="w-16 h-16">
-                    <CircularProgressbar
-                      value={getMinutesPercentage()}
-                      text={`${time.minutes} mins`}
-                      styles={buildStyles({
-                        textColor: "#000",
-                        pathColor: "#ff9800", // Customize progress color
-                        trailColor: "#ddd",
-                      })}
-                    />
-                  </div>
-                  <div className="w-16 h-16">
-                    <CircularProgressbar
-                      value={getSecondsPercentage()}
-                      text={`${time.seconds} secs`}
-                      styles={buildStyles({
-                        textColor: "#000",
-                        pathColor: "#f44336", // Customize progress color
-                        trailColor: "#ddd",
-                      })}
-                    />
-                  </div>
-                </div>
-              </div>
-          
-                )}
-              </div>
+          <div className="px-4 md:px-10 w-[85%] ">
+            <div className="relative p-5 bg-white rounded-lg shadow ">
+              {confirmVote ? (
+                <>
+                  {!voted ? (
+                    <div className=" flex flex-col items-center p-8">
+                      <Image
+                        className="rounded-full h-16 w-16 object-cover p-2 bg-[#F1F6F9] "
+                        src="/pass.svg"
+                        alt="candidate"
+                        width={500}
+                        height={500}
+                        sizes="100vw"
+                        style={{ objectPosition: "center" }}
+                        priority
+                      />
 
-              {!showElection && (
-                <div className="w-full mx-auto mt-8">
-                  <select
-                    onChange={handleElectionChange}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-basecolour focus:border-basecolour block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  >
-                    <option value="">Select Election Category</option>
-                    <option value="PS">2024 U.S presidential election</option>
-                    <option value="GS">2024 U.S governorship election</option>
-                    <option value="LC">2024 U.S local council election</option>
-                  </select>
-
-                  {selectedElection && (
-                    <div className="mt-6 flex flex-col md:flex-row md:justify-between gap-5">
-                      <div className="flex flex-col">
-                        <label
-                          htmlFor="start-date"
-                          className="text-[#666666] text-sm mb-2"
+                      <div className=" w-[75%] text-center my-10">
+                        <h3 className=" font-semibold text-xl">
+                          Congratulations 🎊
+                        </h3>
+                        <p className="mt-6 text-[#2B2928] ">
+                          Your transaction has been confirmed and your vote has
+                          been casted successfully
+                        </p>
+                        <p
+                          className="mt-8 bg-basecolour  font-semibold hover:bg-opacity-90 transition duration-300 ease-in-out text-[#fff] p-2 rounded-lg  cursor-pointer"
+                          onClick={handleVote}
                         >
-                          Start date
-                        </label>
-                        <input
-                          id="start-date"
-                          type="text"
-                          className="px-3 py-2 border border-[#A6C5DD] rounded-lg focus:outline-none w-full text-sm"
-                          value={"22nd September 2024"}
-                          disabled
+                          View Vote
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="px-4 pb-8">
+                      <div className=" flex justify-between items-center text-sm">
+                        <h3 className="text-[#01916E] text-base font-semibold">
+                          2024 Governorship Election , Marion County, Florida.{" "}
+                        </h3>
+                        <h3 className=" bg-[#46829C] px-5 py-2 text-[#fff] rounded-lg text-sm">
+                          Voted
+                        </h3>
+                      </div>
+                      <div className="flex justify-center mt-8">
+                        <Image
+                          className="rounded-full h-40 w-40 object-cover "
+                          src="/demo-img-1.avif"
+                          alt="candidate"
+                          width={500}
+                          height={500}
+                          sizes="100vw"
+                          style={{ objectPosition: "center" }}
+                          priority
                         />
                       </div>
-                      <div className="flex flex-col">
-                        <label
-                          htmlFor="end-date"
-                          className="text-[#666666] text-sm mb-2"
+                      <div className=" text-sm mt-8 ">
+                        <div>
+                          <label htmlFor="name" className=" text-[#0A0B0A] ">
+                            Candidate name
+                          </label>
+                          <p className=" border border-[#01CD9C] rounded-lg px-3 py-2 text-[#0A0B0A] mt-2">
+                            Sarah Mendez
+                          </p>
+                        </div>
+
+                        <div className=" flex justify-between mt-8">
+                          <div>
+                            <label htmlFor="name" className=" text-[#0A0B0A]">
+                              Transaction ID
+                            </label>
+                            <p className="border border-[#01CD9C] rounded-lg px-3 py-2 text-[#0A0B0A] mt-2 flex items-center">
+                              x66551cdaa1def9c0dd4c1598
+                              <span className="pl-8">
+                                <Image
+                                  className="h-5 w-5"
+                                  src="/copy.svg"
+                                  alt="copy"
+                                  width={20}
+                                  height={20}
+                                  sizes="100vw"
+                                />
+                              </span>
+                            </p>
+                          </div>
+                          <div>
+                            <label htmlFor="name" className=" text-[#0A0B0A]">
+                              Number of vote casted
+                            </label>
+                            <p className=" border border-[#01CD9C] rounded-lg px-3 py-2 text-[#0A0B0A] mt-2">
+                              21,000,253
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mt-8 flex justify-end">
+                        <span
+                          className="bg-basecolour font-semibold hover:bg-opacity-90 transition duration-300 ease-in-out px-6 py-3 text-[#fff] rounded-full text-sm cursor-pointer mt-6"
+                          onClick={handleFinish}
                         >
-                          End date
-                        </label>
-                        <input
-                          id="end-date"
-                          type="text"
-                          className="px-3 py-2 border border-[#A6C5DD] rounded-lg focus:outline-none w-full text-sm"
-                          value={"23rd September 2024"}
-                          disabled
-                        />
+                          Finish
+                        </span>
                       </div>
                     </div>
                   )}
-                  {selectedElection && (
-                    <span
-                      className="bg-basecolour text-center text-white py-2 px-4 rounded-lg w-full font-semibold mt-6 mb-4 block"
-                      onClick={handleElection}
-                    >
-                      Continue
-                    </span>
-                  )}
-                </div>
-              )}
+                </>
+              ) : (
+                <div>
+                  <div className="flex flex-col items-center  ">
+                    <Image
+                      className="rounded-full h-40 w-40 object-cover"
+                      src="/us-flag.jpeg"
+                      alt="candidate"
+                      width={500}
+                      height={500}
+                      sizes="100vw"
+                      style={{ objectPosition: "center" }}
+                      priority
+                    />
+                    {selectedElection && goBack > 0 && (
+                      <div className="flex items-center gap-4 text-base mt-6">
+                        <p className="font-semibold">Time left :</p>
+                        <div className="flex items-center gap-4 font-semibold">
+                          <div className="w-16 h-16">
+                            <CircularProgressbar
+                              value={getHoursPercentage()}
+                              text={`${time.hours} hrs`}
+                              styles={buildStyles({
+                                textColor: "#000",
+                                pathColor: "#4caf50",
+                                trailColor: "#ddd",
+                              })}
+                            />
+                          </div>
+                          <div className="w-16 h-16">
+                            <CircularProgressbar
+                              value={getMinutesPercentage()}
+                              text={`${time.minutes} mins`}
+                              styles={buildStyles({
+                                textColor: "#000",
+                                pathColor: "#ff9800",
+                                trailColor: "#ddd",
+                              })}
+                            />
+                          </div>
+                          <div className="w-16 h-16">
+                            <CircularProgressbar
+                              value={getSecondsPercentage()}
+                              text={`${time.seconds} secs`}
+                              styles={buildStyles({
+                                textColor: "#000",
+                                pathColor: "#f44336", // Customize progress color
+                                trailColor: "#ddd",
+                              })}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
 
-              {showElection && (
-                <div className=" mt-10">
-                  <ElectionTable />
-                  <button
-                    type="submit"
-                    onClick={toggleModal} 
-                    className="bg-basecolour text-white py-2 px-4 rounded-lg w-full font-semibold mt-6 mb-4"
-                  >
-                  Cast vote
-                  </button>
+                  {!showElection && (
+                    <div className="w-full mx-auto mt-8">
+                      {goBack === 0 && (
+                        <select
+                          onChange={handleElectionChange}
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-basecolour focus:border-basecolour block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          value={selectedElection}
+                        >
+                          <option value="">Select Election Category</option>
+                          <option value="PE">
+                            2024 U.S presidential election
+                          </option>
+                          <option value="GE">
+                            2024 U.S governorship election
+                          </option>
+                          <option value="LC">
+                            2024 U.S local council election
+                          </option>
+                        </select>
+                      )}
+
+                      {selectedElection && goBack === 1 && (
+                        <>
+                          <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
+                            {selectedElection === "PE" && (
+                              <p>2024 U.S presidential election</p>
+                            )}
+                            {selectedElection === "GE" && (
+                              <p>2024 U.S governorship election</p>
+                            )}
+                            {selectedElection === "LC" && (
+                              <p>2024 U.S local council election</p>
+                            )}
+                          </div>
+                          <div className="mt-6 flex flex-col md:flex-row md:justify-between gap-5">
+                            <div className="flex flex-col">
+                              <label
+                                htmlFor="start-date"
+                                className="text-[#666666] text-sm mb-2"
+                              >
+                                Start date
+                              </label>
+                              <input
+                                id="start-date"
+                                type="text"
+                                className="px-3 py-2 border border-[#A6C5DD] rounded-lg focus:outline-none w-full text-sm"
+                                value={"22nd September 2024"}
+                                disabled
+                              />
+                            </div>
+                            <div className="flex flex-col">
+                              <label
+                                htmlFor="end-date"
+                                className="text-[#666666] text-sm mb-2"
+                              >
+                                End date
+                              </label>
+                              <input
+                                id="end-date"
+                                type="text"
+                                className="px-3 py-2 border border-[#A6C5DD] rounded-lg focus:outline-none w-full text-sm"
+                                value={"23rd September 2024"}
+                                disabled
+                              />
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      {selectedElection && goBack === 1 && (
+                        <span
+                          className="bg-basecolour text-center text-white py-2 px-4 rounded-lg w-full font-semibold mt-6 mb-4 block cursor-pointer"
+                          onClick={handleElection}
+                        >
+                          Continue
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  {showElection && goBack === 2 && (
+                    <div className=" mt-10">
+                      <ElectionTable />
+                      <button
+                        type="submit"
+                        onClick={toggleModal}
+                        className="bg-basecolour text-white py-2 px-4 rounded-lg w-full font-semibold mt-6 mb-4"
+                      >
+                        Cast vote
+                      </button>
+                    </div>
+                  )}
+
+                  {goBack > 0 && (
+                    <div
+                      className="absolute top-0 left-0 p-5 cursor-pointer flex items-center space-x-2 group"
+                      onClick={handleGoBack}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        className="w-6 h-6 transition-transform transform group-hover:-translate-x-2 duration-300"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 19l-7-7 7-7"
+                        />
+                      </svg>
+                      {/* <span className="transition-opacity group-hover:opacity-70 duration-300 text-sm">back</span> */}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -258,8 +442,8 @@ export default function Vote() {
           </div>
         )}
       </div>
-{/* Modal */}
-<div
+      {/* Modal */}
+      <div
         id="popup-modal"
         tabIndex={-1}
         className={`${
@@ -309,13 +493,14 @@ export default function Vote() {
                 />
               </svg>
               <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to proceed? you can&apos;t change your selection after confirmation 
+                Are you sure you want to proceed? you can&apos;t change your
+                selection after confirmation
               </h3>
               <button
                 data-modal-hide="popup-modal"
                 type="button"
                 className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
-                onClick={toggleModal}
+                onClick={handleConfirmation}
               >
                 Yes, I&apos;m sure
               </button>
@@ -331,7 +516,6 @@ export default function Vote() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }

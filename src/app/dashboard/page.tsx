@@ -1,22 +1,16 @@
 "use client";
 
 import Image from "next/image";
-// import Home from "@/components/admin/home";
-// import AdminLoanDashboard from "@/components/admin/loan";
-// import ReportsSection from "@/components/admin/reports";
-// import SettingsSection from "@/components/admin/settings";
-// import UsersSection from "@/components/admin/user";
+
 import { useState } from "react";
 import Profile from "../component/profile/profile";
 import Vote from "../component/vote/vote";
-
-
+import Results from "../component/results/results";
+import Settings from "../component/settings/settings";
 
 export default function UserDashboard() {
   const [activeSection, setActiveSection] = useState("Dashboard");
   // const [dropdownOpen, setDropdownOpen] = useState(false);
-
-
 
   return (
     <div className="min-h-screen flex bg-[#FAFAFA]">
@@ -51,7 +45,7 @@ export default function UserDashboard() {
               onClick={() => setActiveSection("Vote")}
               className={`flex items-center  py-3 ps-10 w-full transition-colors rounded-lg ${
                 activeSection === "Vote"
-                ? "bg-[#FAFAFA] text-basecolour rounded-s-full"
+                  ? "bg-[#FAFAFA] text-basecolour rounded-s-full"
                   : " hover:opacity-75 "
               }`}
             >
@@ -69,10 +63,10 @@ export default function UserDashboard() {
           </li>
           <li className="mb-4">
             <button
-              onClick={() => setActiveSection("Loans")}
+              onClick={() => setActiveSection("Results")}
               className={`flex items-center  py-3 ps-10 w-full transition-colors rounded-lg ${
-                activeSection === "Loans"
-                ? "bg-[#FAFAFA] text-basecolour rounded-s-full"
+                activeSection === "Results"
+                  ? "bg-[#FAFAFA] text-basecolour rounded-s-full"
                   : " hover:opacity-75 "
               }`}
             >
@@ -90,10 +84,10 @@ export default function UserDashboard() {
           </li>
           <li className="mb-4">
             <button
-              onClick={() => setActiveSection("Reports")}
+              onClick={() => setActiveSection("Settings")}
               className={`flex items-center  py-3 ps-10 w-full transition-colors rounded-lg ${
-                activeSection === "Reports"
-                ? "bg-[#FAFAFA] text-basecolour rounded-s-full"
+                activeSection === "Settings"
+                  ? "bg-[#FAFAFA] text-basecolour rounded-s-full"
                   : " hover:opacity-75 "
               }`}
             >
@@ -112,12 +106,8 @@ export default function UserDashboard() {
           </li>
           <li className=" mt-48">
             <button
-              onClick={() => setActiveSection("Settings")}
-              className={`flex items-center  py-3 ps-10 w-full transition-colors rounded-lg ${
-                activeSection === "Settings"
-                ? "bg-[#FAFAFA] text-basecolour rounded-s-full"
-                  : " hover:opacity-75 "
-              }`}
+              // onClick={() => setActiveSection("Settings")}
+              className={`flex items-center  py-3 ps-10 w-full transition-colors rounded-lg `}
             >
               <Image
                 src={"/signout.svg"}
@@ -136,15 +126,11 @@ export default function UserDashboard() {
 
       {/* Main Content */}
       <div className="flex-1 ml-64 flex flex-col overflow-hidden overflow-x-hidden">
-      
-
         <div className="flex-1 overflow-y-auto overflow-x-hidden p-6">
           {activeSection === "Dashboard" && <Profile />}
           {activeSection === "Vote" && <Vote />}
-          {/* {activeSection === "Loans" && <AdminLoanDashboard />}
-          {activeSection === "Users" && <UsersSection />}
-          {activeSection === "Reports" && <ReportsSection />}
-          {activeSection === "Settings" && <SettingsSection />} */}
+          {activeSection === "Results" && <Results />}
+          {activeSection === "Settings" && <Settings />}
         </div>
       </div>
     </div>
